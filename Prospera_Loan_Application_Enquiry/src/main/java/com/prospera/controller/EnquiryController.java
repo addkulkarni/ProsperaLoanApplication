@@ -40,4 +40,14 @@ public class EnquiryController {
 		ResponseEntity<Enquiry> response = esi.addEnquiry(e);
 		return response;
 	}
+	
+	@GetMapping("/getallenquiry")
+	public ResponseEntity<Enquiry> getallenquiry (@RequestBody Enquiry e)
+	{
+		ResponseEntity<Enquiry> response =esi.getallenquiry(e);
+		return response;
+		
+	}
 }
+
+
