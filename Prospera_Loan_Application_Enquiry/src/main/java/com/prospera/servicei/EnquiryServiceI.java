@@ -1,5 +1,6 @@
 package com.prospera.servicei;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,15 @@ public interface EnquiryServiceI {
 
 	Optional<Enquiry> getEnquiryById(int enquiryID);
 
-	ResponseEntity<Enquiry> getallenquiry(Enquiry e);
+	List<Enquiry> getallenquiry();
 	
 	ResponseEntity<Enquiry> getById(int enquiryID);
+
+	List<Enquiry> getEnquiryByLoanStatus(String loanStatus);
+
+	List<Enquiry> getEnquiryByEnquiryStatus(String enquiryStatus);
+
+	ResponseEntity<String> forwardToOE(int enquiryID);
 
 
 }
