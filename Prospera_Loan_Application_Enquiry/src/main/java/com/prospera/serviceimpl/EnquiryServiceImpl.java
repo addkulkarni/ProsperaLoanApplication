@@ -38,6 +38,7 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 	}
 
 	@Override
+
 	public ResponseEntity<String> deleteById(int enquiryID)
 	{
 		er.deleteById(enquiryID);
@@ -50,6 +51,23 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 	{
 		Optional<Enquiry> o = er.findById(enquiryID);
 		return o;
+	}
+	
+	@Override
+	public ResponseEntity<Enquiry> getallenquiry(Enquiry e)
+	{
+		er.findAll();
+		ResponseEntity<Enquiry> response = new ResponseEntity<Enquiry>(e,HttpStatus.OK);
+		return response;
+	}
+	
+	@Override
+	public ResponseEntity<Enquiry> getById(int enquiryID) 
+	{
+		er.findById(enquiryID);
+		ResponseEntity<Enquiry> response = new ResponseEntity<Enquiry>(HttpStatus.OK);
+		return response;
+
 	}
 
 }

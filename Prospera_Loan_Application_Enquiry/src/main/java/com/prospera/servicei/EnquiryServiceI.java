@@ -16,4 +16,9 @@ public interface EnquiryServiceI {
 
 	Optional<Enquiry> getEnquiryById(int enquiryID);
 
+	ResponseEntity<Enquiry> getallenquiry(Enquiry e);
+	
+	ResponseEntity<Enquiry> getById(int enquiryID);
+
+
 }
