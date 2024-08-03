@@ -12,18 +12,18 @@ import lombok.Data;
 @Entity
 public class Enquiry
 {
-		@Id
-		@GeneratedValue(strategy = GenerationType.IDENTITY)
-		private int enquiryID;
-		private String firstName;
-		private String lastName;
-		private int age;
-		private String email;
-		private Long mobileNo;
-		private String pancardNo;
-		private String adharcardNo;
-		private String gender;
-		@OneToOne(cascade = CascadeType.PERSIST)
-		//private Cibil cibil;
-		private String enquiryStatus;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int enquiryID;
+	private String firstName;
+	private String lastName;
+	private int age;
+	private String email;
+	private Long mobileNo;
+	private String pancardNo;
+	private String adharcardNo;
+	private String gender;
+	private String enquiryStatus;
+	@OneToOne(cascade = CascadeType.PERSIST)
+	private Cibil cibil;
 }
