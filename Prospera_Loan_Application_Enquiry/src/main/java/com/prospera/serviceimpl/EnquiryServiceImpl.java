@@ -34,4 +34,12 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 		return response;
 	}
 
+	@Override
+	public ResponseEntity<Enquiry> getById(int enquiryID) 
+	{
+		er.findById(enquiryID);
+		ResponseEntity<Enquiry> response = new ResponseEntity<Enquiry>(HttpStatus.OK);
+		return response;
+	}
+
 }
