@@ -10,4 +10,7 @@ public interface EnquiryServiceI {
 
 	ResponseEntity<Enquiry> addEnquiry(Enquiry e);
 
+	ResponseEntity<Enquiry> getallenquiry(Enquiry e);
+	
+
 }

@@ -34,4 +34,12 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 		return response;
 	}
 
+	@Override
+	public ResponseEntity<Enquiry> getallenquiry(Enquiry e) {
+		
+		er.findAll();
+		ResponseEntity<Enquiry> response = new ResponseEntity<Enquiry>(e,HttpStatus.OK);
+		return response;
+	}
+
 }
