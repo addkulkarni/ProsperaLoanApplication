@@ -1,5 +1,8 @@
 package com.prospera.serviceimpl;
 
+
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +35,21 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 		System.out.println(e.getEnquiryStatus());
 		ResponseEntity<Enquiry> response = new ResponseEntity<Enquiry>(e,HttpStatus.OK);
 		return response;
+	}
+
+	@Override
+	public ResponseEntity<String> deleteById(int enquiryID)
+	{
+		er.deleteById(enquiryID);
+		ResponseEntity<String> response = new ResponseEntity<String>("Enquiry deleted succesffuly", HttpStatus.OK);
+		return response;
+	}
+
+	@Override
+	public Optional<Enquiry> getEnquiryById(int enquiryID)
+	{
+		Optional<Enquiry> o = er.findById(enquiryID);
+		return o;
 	}
 
 }

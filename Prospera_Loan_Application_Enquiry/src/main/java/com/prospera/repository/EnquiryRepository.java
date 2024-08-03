@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.prospera.model.Enquiry;
 
 @Repository
-public interface EnquiryRepository extends JpaRepository<Enquiry, Integer>{
+public interface EnquiryRepository extends CrudRepository<Enquiry, Integer>
+{
 
 }
