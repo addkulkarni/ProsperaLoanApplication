@@ -46,8 +46,8 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 		{
 		  SimpleMailMessage message=new SimpleMailMessage();
 		  message.setTo(e.getEmail());
-		  message.setSubject("welcome"+ " " + e.getFirstName());
-		  message.setText("welcome"+ " " + e.getFirstName()+" "+"to Prospera application");
+		  message.setSubject("Welcome "+ e.getFirstName());
+		  message.setText("Hello "+ e.getFirstName()+",\nWe are pleased to know about your interest in Prospera Loans.");
 		  sender.send(message);
 		}
 		catch(MailException exception)
