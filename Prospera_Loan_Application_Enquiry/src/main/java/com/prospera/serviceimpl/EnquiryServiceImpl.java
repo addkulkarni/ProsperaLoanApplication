@@ -8,6 +8,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.prospera.exceptionhandler.EnquiryIdNotFoundException;
@@ -22,13 +25,15 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 	@Autowired
 	EnquiryRepository er;
 	
+	@Autowired 
+	private JavaMailSender sender;
+	
 	@Override
 	public ResponseEntity<Enquiry> addEnquiry(Enquiry e)
 	{
 		e.setLoanStatus("Pending");
 		e.setEnquiryStatus("Initaited");
 		e.setTimeStamp(LocalDateTime.now());
-		System.out.println(LocalDateTime.now());
 		Optional<Enquiry> o = er.findByPancardNo(e.getPancardNo());
 		if(o.isPresent())
 		{
@@ -37,13 +42,25 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 		
 		er.save(e);
 		ResponseEntity<Enquiry> response = new ResponseEntity<Enquiry>(e,HttpStatus.OK);
+		try
+		{
+		  SimpleMailMessage message=new SimpleMailMessage();
+		  message.setTo(e.getEmail());
+		  message.setSubject("welcome"+ " " + e.getFirstName());
+		  message.setText("welcome"+ " " + e.getFirstName()+" "+"to Prospera application");
+		  sender.send(message);
+		}
+		catch(MailException exception)
+		{
+			System.out.println("email is incorrect");
+		}
 		return response;
 	}
 	
 	@Override
 	public ResponseEntity<Enquiry> getById(int enquiryID)
 	{
-		Optional<Enquiry> o = er.findById(enquiryID);
+        Optional<Enquiry> o = er.findById(enquiryID);
 		if(o.isPresent())
 		{
 			ResponseEntity<Enquiry> response = new ResponseEntity<>(o.get(),HttpStatus.OK);
@@ -53,7 +70,9 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 		{
 			throw new EnquiryIdNotFoundException("Id not found");
 		}
-	}
+    }
+
+
 	
 	@Override
 	public Optional<Enquiry> getEnquiryById(int enquiryID)
