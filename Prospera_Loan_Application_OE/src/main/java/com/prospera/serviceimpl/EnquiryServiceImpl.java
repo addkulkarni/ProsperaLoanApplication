@@ -2,7 +2,6 @@ package com.prospera.serviceimpl;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +58,27 @@ public class EnquiryServiceImpl implements EnquiryServiceI
 			en.setCibil(c);
 			er.save(en);
 			ResponseEntity<String> response=new ResponseEntity<String>("Your Cibil Score is "+randomnum,HttpStatus.OK);
+			try
+			{
+			    SimpleMailMessage message=new SimpleMailMessage();
+			    if(c.getCibilStatus().equals("Approved"))
+			    {
+				    message.setTo(en.getEmail());
+				    message.setSubject("Congratulations " + en.getFirstName());
+				    message.setText("Your cibil score is approved-" +c.getCibilscore()+"\n"+"Required documents for Further Process are following - \n"+" 1. Adharcard \n"+ "2. PanCard \n"+"3. 2 photo copy \n"+"4. Address Proof \n"+"5. Light bill");
+			    }
+			    else
+			    {
+				    message.setTo(en.getEmail());
+				    message.setSubject("Sorry " + en.getFirstName());
+				    message.setText("Your Cibil Score Rejected");
+			    }
+				sender.send(message);
+			}
+			catch(MailException exception)
+			{
+				System.out.println("email is incorrect");
+			}
 			return response;
 		}
 	}
@@ -68,26 +88,6 @@ public class EnquiryServiceImpl implements EnquiryServiceI
 	{
 		List<Enquiry> l = er.findAllByEnquiryStatus("Forwarded to OE");
 		ResponseEntity<List<Enquiry>> response = new ResponseEntity<>(l,HttpStatus.OK);
-		try
-		{
-		    SimpleMailMessage message=new SimpleMailMessage();
-		    if(c.getCibilStatus().equals("Approved"))
-		    {
-			    message.setTo(en.getEmail());
-			    message.setSubject("Congratulations " + en.getFirstName());
-			    message.setText("Your cibil score is approved-" +c.getCibilscore()+"\n"+"Required documents for Further Process are following - \n"+" 1. Adharcard \n"+ "2. PanCard \n"+"3. 2 photo copy \n"+"4. Address Proof \n"+"5. Light bill");
-		    }
-		    else
-		    {
-			    message.setTo(en.getEmail());
-			    message.setSubject("Sorry " + en.getFirstName());
-			    message.setText("Your Cibil Score Rejected");
-		    }
-			sender.send(message);
-		}
-		catch(MailException exception)
-		{
-			System.out.println("email is incorrect");
-		}
+		return response;
     }
 }
