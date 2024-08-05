@@ -1,7 +1,6 @@
 package com.prospera.serviceimpl;
 
-
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +32,7 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 	{
 		e.setLoanStatus("Pending");
 		e.setEnquiryStatus("Initaited");
-		e.setTimeStamp(LocalDateTime.now());
+		e.setTimeStamp(new Date());
 		Optional<Enquiry> o = er.findByPancardNo(e.getPancardNo());
 		if(o.isPresent())
 		{
