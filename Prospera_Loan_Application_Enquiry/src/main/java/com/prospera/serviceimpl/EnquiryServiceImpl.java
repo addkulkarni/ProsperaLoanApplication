@@ -31,7 +31,7 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 	public ResponseEntity<String> addEnquiry(Enquiry e)
 	{
 		e.setLoanStatus("Pending");
-		e.setEnquiryStatus("Initaited");
+		e.setEnquiryStatus("Initiated");
 		e.setTimeStamp(new Date());
 		Optional<Enquiry> o = er.findByPancardNo(e.getPancardNo());
 		if(o.isPresent())
@@ -135,7 +135,20 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 			Enquiry e = o.get();
 			e.setEnquiryStatus("Forwarded to OE");
 			er.save(e);
+			try
+			{
+			  SimpleMailMessage message=new SimpleMailMessage();
+			  message.setTo(e.getEmail());
+			  message.setSubject("Congratulations "+ e.getFirstName());
+			  message.setText("Hello "+ e.getFirstName()+ " Your Enquiry forworded to OE ");
+			  sender.send(message);
+			}
+			catch(MailException exception)
+			{
+				System.out.println("email is incorrect");
+			}
 			return new ResponseEntity<String>("Enquiry has been successfully forwared to OE",HttpStatus.OK);
+			
 		}
 		else
 		{
