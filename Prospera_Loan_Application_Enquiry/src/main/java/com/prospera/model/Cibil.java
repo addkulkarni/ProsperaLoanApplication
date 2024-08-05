@@ -17,6 +17,5 @@ public class Cibil
     private int cibilid;
     private int cibilscore;
     private String cibilStatus;
-    @OneToOne(cascade = CascadeType.PERSIST)
-    Enquiry e;
+   
 }
