@@ -29,7 +29,7 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 	private JavaMailSender sender;
 	
 	@Override
-	public ResponseEntity<Enquiry> addEnquiry(Enquiry e)
+	public ResponseEntity<String> addEnquiry(Enquiry e)
 	{
 		e.setLoanStatus("Pending");
 		e.setEnquiryStatus("Initaited");
@@ -41,7 +41,7 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 		}
 		
 		er.save(e);
-		ResponseEntity<Enquiry> response = new ResponseEntity<Enquiry>(e,HttpStatus.OK);
+		ResponseEntity<String> response = new ResponseEntity<String>("Enquiry added",HttpStatus.OK);
 		try
 		{
 		  SimpleMailMessage message=new SimpleMailMessage();
@@ -104,10 +104,10 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 	}
 	
 	@Override
-	public ResponseEntity<Enquiry> updateEnquiry(int enquiryID, Enquiry e)
+	public ResponseEntity<String> updateEnquiry(int enquiryID, Enquiry e)
 	{
 		er.save(e);
-		ResponseEntity<Enquiry> response = new ResponseEntity<Enquiry>(HttpStatus.OK);
+		ResponseEntity<String> response = new ResponseEntity<String>(HttpStatus.OK);
 		return response;
 	}
 
