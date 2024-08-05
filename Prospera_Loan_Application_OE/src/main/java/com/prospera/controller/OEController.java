@@ -1,15 +1,30 @@
 package com.prospera.controller;
 
+import java.util.Random;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.prospera.servicei.EnquiryServiceI;
 
 
 @RestController
+@RequestMapping("/oe")
 public class OEController
 {
-	@GetMapping("/")
-	public String homepage()
+	
+	@Autowired
+	EnquiryServiceI esi;
+	
+	@GetMapping("/cibilscore/{enquiryID}")
+	public ResponseEntity<String> calculateCibil(@PathVariable("enquiryID")int enquiryID)
 	{
-		return "OE is running";
+		
+		ResponseEntity<String> response=esi.calculateCibil(enquiryID);
+		return response;
 	}
 }
