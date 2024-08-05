@@ -129,7 +129,7 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 	@Override
 	public ResponseEntity<String> forwardToOE(int enquiryID)
 	{
-		Optional<Enquiry> o = er.findByIdAndEnquiryStatus(enquiryID, "Initiated");
+		Optional<Enquiry> o = er.findByEnquiryIDAndEnquiryStatus(enquiryID, "Initiated");
 		if(o.isPresent())
 		{
 			Enquiry e = o.get();
