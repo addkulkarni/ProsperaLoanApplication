@@ -38,11 +38,13 @@ public class EnquiryServiceImpl implements EnquiryServiceI
 		{
 			c.setCibilStatus("Approved");
 			en.setLoanStatus("Cibil Approved");
+			en.setEnquiryStatus("Pending Registration");
 		}
 		else
 		{
 			c.setCibilStatus("Rejected");
 			en.setLoanStatus("Cibil Rejected");
+			en.setEnquiryStatus("Eligibility rejected");
 		}
 		en.setCibil(c);
 		er.save(en);
