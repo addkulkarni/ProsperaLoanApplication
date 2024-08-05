@@ -1,13 +1,16 @@
 package com.prospera.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.prospera.model.Enquiry;
@@ -21,10 +24,10 @@ public class EnquiryController {
 	EnquiryServiceI esi;
 	
 	@PostMapping("addenquiry")
-	public ResponseEntity<Enquiry> addEnquiry(@RequestBody Enquiry e )
+	public ResponseEntity<Enquiry> addEnquiry(@RequestBody Enquiry e)
 	{
-	     ResponseEntity<Enquiry> response = esi.addEnquiry(e);
-	     return response;
+		ResponseEntity<Enquiry> response = esi.addEnquiry(e);
+		return response;
 	}
 	
 	@GetMapping("getbyid/{enquiryID}")
@@ -34,6 +37,27 @@ public class EnquiryController {
 		return response;
 	}
 	
+	@GetMapping("/getallenquiry")
+	public ResponseEntity<List<Enquiry>> getallenquiry ()
+	{
+		List<Enquiry> l = esi.getallenquiry();
+		return new ResponseEntity<>(l, HttpStatus.OK);
+	}
+	
+	@GetMapping("/getbyloanstatus/{loanStatus}")
+	public ResponseEntity<List<Enquiry>> getByLoanStatus(@PathVariable("loanStatus")String loanStatus)
+	{
+		List<Enquiry> l = esi.getEnquiryByLoanStatus(loanStatus);
+		return new ResponseEntity<>(l,HttpStatus.OK);
+	}
+	
+	@GetMapping("/getbyenquirystatus/{enquiryStatus}")
+	public ResponseEntity<List<Enquiry>> getByEnquiryStatus(@PathVariable("enquiryStatus")String enquiryStatus)
+	{
+		List<Enquiry> l = esi.getEnquiryByEnquiryStatus(enquiryStatus);
+		return new ResponseEntity<>(l,HttpStatus.OK);
+	}
+	
 	@PutMapping("updateenquiry/{enquiryID}")
 	public ResponseEntity<Enquiry> updateEnquiry(@PathVariable("enquiryID")int enquiryID, @RequestBody Enquiry e)
 	{
@@ -41,13 +65,18 @@ public class EnquiryController {
 		return response;
 	}
 	
-	
-	@GetMapping("/getallenquiry")
-	public ResponseEntity<Enquiry> getallenquiry (@RequestBody Enquiry e)
+	@DeleteMapping("deletebyid/{enquiryID}")
+	public ResponseEntity<String> deleteEnquiry(@PathVariable("enquiryID")int enquiryID)
 	{
-		ResponseEntity<Enquiry> response =esi.getallenquiry(e);
+		ResponseEntity<String> response = esi.deleteById(enquiryID);
 		return response;
-		
+	}
+	
+	@GetMapping("forwardtooe/{enquiryID}")
+	public ResponseEntity<String> forwardToOe(@PathVariable("enquiryID")int enquiryID)
+	{
+		ResponseEntity<String> response = esi.forwardToOE(enquiryID);
+		return response;
 	}
 }
 

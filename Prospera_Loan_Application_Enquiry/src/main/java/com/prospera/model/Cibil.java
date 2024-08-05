@@ -1,9 +1,11 @@
 package com.prospera.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 @Data
@@ -15,4 +17,6 @@ public class Cibil
     private int cibilid;
     private int cibilscore;
     private String cibilStatus;
+    @OneToOne(cascade = CascadeType.PERSIST)
+    Enquiry e;
 }

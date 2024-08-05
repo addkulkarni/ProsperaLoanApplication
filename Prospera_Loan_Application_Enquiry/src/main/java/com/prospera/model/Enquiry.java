@@ -1,12 +1,12 @@
 package com.prospera.model;
 
-import jakarta.persistence.CascadeType;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 @Data
@@ -24,7 +24,7 @@ public class Enquiry
 	private String pancardNo;
 	private String adharcardNo;
 	private String gender;
+	private	LocalDateTime timeStamp;
+	private String loanStatus;
 	private String enquiryStatus;
-	@OneToOne(cascade = CascadeType.PERSIST)
-	private Cibil cibil;
 }
