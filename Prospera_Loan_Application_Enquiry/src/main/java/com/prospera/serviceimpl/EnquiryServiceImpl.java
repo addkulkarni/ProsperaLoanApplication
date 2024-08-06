@@ -1,7 +1,6 @@
 package com.prospera.serviceimpl;
 
-
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,11 +28,11 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 	private JavaMailSender sender;
 	
 	@Override
-	public ResponseEntity<Enquiry> addEnquiry(Enquiry e)
+	public ResponseEntity<String> addEnquiry(Enquiry e)
 	{
 		e.setLoanStatus("Pending");
-		e.setEnquiryStatus("Initaited");
-		e.setTimeStamp(LocalDateTime.now());
+		e.setEnquiryStatus("Initiated");
+		e.setTimeStamp(new Date());
 		Optional<Enquiry> o = er.findByPancardNo(e.getPancardNo());
 		if(o.isPresent())
 		{
@@ -41,7 +40,7 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 		}
 		
 		er.save(e);
-		ResponseEntity<Enquiry> response = new ResponseEntity<Enquiry>(e,HttpStatus.OK);
+		ResponseEntity<String> response = new ResponseEntity<String>("Enquiry added",HttpStatus.OK);
 		try
 		{
 		  SimpleMailMessage message=new SimpleMailMessage();
@@ -104,10 +103,10 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 	}
 	
 	@Override
-	public ResponseEntity<Enquiry> updateEnquiry(int enquiryID, Enquiry e)
+	public ResponseEntity<String> updateEnquiry(int enquiryID, Enquiry e)
 	{
 		er.save(e);
-		ResponseEntity<Enquiry> response = new ResponseEntity<Enquiry>(HttpStatus.OK);
+		ResponseEntity<String> response = new ResponseEntity<String>(HttpStatus.OK);
 		return response;
 	}
 
@@ -130,13 +129,26 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 	@Override
 	public ResponseEntity<String> forwardToOE(int enquiryID)
 	{
-		Optional<Enquiry> o = er.findById(enquiryID);
+		Optional<Enquiry> o = er.findByEnquiryIDAndEnquiryStatus(enquiryID, "Initiated");
 		if(o.isPresent())
 		{
 			Enquiry e = o.get();
 			e.setEnquiryStatus("Forwarded to OE");
 			er.save(e);
+			try
+			{
+			  SimpleMailMessage message=new SimpleMailMessage();
+			  message.setTo(e.getEmail());
+			  message.setSubject("Congratulations "+ e.getFirstName());
+			  message.setText("Hello "+ e.getFirstName()+ " Your Enquiry forworded to OE ");
+			  sender.send(message);
+			}
+			catch(MailException exception)
+			{
+				System.out.println("email is incorrect");
+			}
 			return new ResponseEntity<String>("Enquiry has been successfully forwared to OE",HttpStatus.OK);
+			
 		}
 		else
 		{

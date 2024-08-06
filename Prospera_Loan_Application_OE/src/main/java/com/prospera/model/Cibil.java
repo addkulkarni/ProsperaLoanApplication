@@ -1,5 +1,7 @@
 package com.prospera.model;
 
+import java.util.Date;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,6 +18,7 @@ public class Cibil
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private int cibilid;
     private int cibilscore;
+    private Date timeStamp;
     private String cibilStatus;
-   
+    
 }
