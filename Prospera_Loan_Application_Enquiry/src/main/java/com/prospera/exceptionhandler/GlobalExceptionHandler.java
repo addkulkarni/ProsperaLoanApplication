@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -63,6 +64,18 @@ public class GlobalExceptionHandler
 	
 	@ExceptionHandler(value = EmailNotFoundException.class)
 	public ResponseEntity<ApiError> EmailNotFoundHandler(EmailNotFoundException e,HttpServletRequest request)
+	{
+		ApiError error=new ApiError();
+		error.setMessage(e.getMessage());
+		error.setPath(request.getRequestURI());
+		error.setStatusCode(HttpStatus.NOT_FOUND.value());
+		error.setStatusMessage(HttpStatus.NOT_FOUND);
+		error.setTimeStamp(new Date());
+		return new ResponseEntity<ApiError>(error,HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(value = MethodArgumentNotValidException.class)
+	public ResponseEntity<ApiError> MethodArgumentNotValidHandler(MethodArgumentNotValidException e,HttpServletRequest request)
 	{
 		ApiError error=new ApiError();
 		error.setMessage(e.getMessage());
