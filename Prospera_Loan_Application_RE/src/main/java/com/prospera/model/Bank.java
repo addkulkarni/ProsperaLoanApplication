@@ -17,5 +17,6 @@ public class Bank
   private String branch;
   private String ifscCode;
   private long accNo;
+  private String accType;
   
 }
