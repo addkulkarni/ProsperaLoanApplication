@@ -12,6 +12,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.prospera.exceptionhandler.CannotForwardToOEException;
+import com.prospera.exceptionhandler.EmailNotFoundException;
 import com.prospera.exceptionhandler.EnquiryIdNotFoundException;
 import com.prospera.exceptionhandler.PanCardAlreadySubmittedException;
 import com.prospera.model.Enquiry;
@@ -33,12 +35,18 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 		e.setLoanStatus("Pending");
 		e.setEnquiryStatus("Initiated");
 		e.setTimeStamp(new Date());
-		Optional<Enquiry> o = er.findByPancardNo(e.getPancardNo());
-		if(o.isPresent())
+		Optional<Enquiry> o1 = er.findByPancardNo(e.getPancardNo());
+//		Remove this comment to enable unique email ids in DB
+//		List<Enquiry> l = er.findByEmail(e.getEmail());
+//		if(!(l.isEmpty()))
+//		{
+//			throw new EmailAlreadyRegisteredException("Email is already used to register");
+//		}
+		if(o1.isPresent())
 		{
 			throw new PanCardAlreadySubmittedException("Pan card has already been used for enquiry");
 		}
-		
+
 		er.save(e);
 		ResponseEntity<String> response = new ResponseEntity<String>("Enquiry added",HttpStatus.OK);
 		try
@@ -71,13 +79,19 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 		}
     }
 
-
-	
 	@Override
-	public Optional<Enquiry> getEnquiryById(int enquiryID)
+	public ResponseEntity<List<Enquiry>> getByEmail(String email)
 	{
-		Optional<Enquiry> o = er.findById(enquiryID);
-		return o;
+		List<Enquiry> l  = er.findAllByEmail(email);
+		if(!(l.isEmpty()))
+		{
+			ResponseEntity<List<Enquiry>> response = new ResponseEntity<>(l, HttpStatus.OK);
+			return response;
+		}
+		else
+		{
+			throw new EmailNotFoundException("No enquiry with the given email found");
+		}
 	}
 	
 	@Override
@@ -98,7 +112,6 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 	public List<Enquiry> getallenquiry()
 	{
 		List<Enquiry> l = er.findAll();
-		
 		return l;
 	}
 	
@@ -106,10 +119,11 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 	public ResponseEntity<String> updateEnquiry(int enquiryID, Enquiry e)
 	{
 		er.save(e);
-		ResponseEntity<String> response = new ResponseEntity<String>(HttpStatus.OK);
+		ResponseEntity<String> response = new ResponseEntity<String>("Update successfull", HttpStatus.OK);
 		return response;
 	}
 
+	
 	@Override
 	public ResponseEntity<String> deleteById(int enquiryID)
 	{
@@ -125,7 +139,7 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 			throw new EnquiryIdNotFoundException("Id not found");
 		}	
 	}
-
+	
 	@Override
 	public ResponseEntity<String> forwardToOE(int enquiryID)
 	{
@@ -137,11 +151,11 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 			er.save(e);
 			try
 			{
-			  SimpleMailMessage message=new SimpleMailMessage();
-			  message.setTo(e.getEmail());
-			  message.setSubject("Congratulations "+ e.getFirstName());
-			  message.setText("Hello "+ e.getFirstName()+ " Your Enquiry forworded to OE ");
-			  sender.send(message);
+				SimpleMailMessage message=new SimpleMailMessage();
+				message.setTo(e.getEmail());
+				message.setSubject("Congratulations "+ e.getFirstName());
+				message.setText("Hello "+ e.getFirstName()+ " Your Enquiry forworded to OE ");
+				sender.send(message);
 			}
 			catch(MailException exception)
 			{
@@ -152,7 +166,9 @@ public class EnquiryServiceImpl implements EnquiryServiceI{
 		}
 		else
 		{
-			throw new EnquiryIdNotFoundException("Id not found");
+			throw new CannotForwardToOEException("This Id cannot be forwarded to OE");
 		}
 	}
+
 }
+

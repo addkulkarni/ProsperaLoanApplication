@@ -18,4 +18,8 @@ public interface EnquiryRepository extends JpaRepository<Enquiry, Integer>
 	Optional<Enquiry> findByPancardNo(String pancardNo);
 
 	Optional<Enquiry> findByEnquiryIDAndEnquiryStatus(int enquiryID, String string);
+
+	List<Enquiry> findAllByEmail(String email);
+
+	void deleteByEmail(String email);
 }
