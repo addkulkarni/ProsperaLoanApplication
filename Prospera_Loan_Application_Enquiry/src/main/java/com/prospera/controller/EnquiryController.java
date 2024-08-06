@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.prospera.model.Enquiry;
 import com.prospera.servicei.EnquiryServiceI;
 
+import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/enquiry")
@@ -26,7 +28,7 @@ public class EnquiryController {
 	EnquiryServiceI esi;
 	
 	@PostMapping("addenquiry")
-	public ResponseEntity<String> addEnquiry(@RequestBody Enquiry e)
+	public ResponseEntity<String> addEnquiry(@Valid @RequestBody Enquiry e)
 	{
 		ResponseEntity<String> response = esi.addEnquiry(e);
 		return response;
@@ -36,6 +38,13 @@ public class EnquiryController {
 	public ResponseEntity<Enquiry> getById(@PathVariable("enquiryID")int enquiryID)
 	{
 		ResponseEntity<Enquiry> response=esi.getById(enquiryID);
+		return response;
+	}
+	
+	@GetMapping("getbyemail/{email}")
+	public ResponseEntity<List<Enquiry>> getByEmail(@PathVariable("email")String email)
+	{
+		ResponseEntity<List<Enquiry>> response=esi.getByEmail(email);
 		return response;
 	}
 	
