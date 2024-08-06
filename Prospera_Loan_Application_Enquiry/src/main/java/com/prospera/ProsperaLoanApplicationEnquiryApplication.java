@@ -11,9 +11,7 @@ public class ProsperaLoanApplicationEnquiryApplication {
 
 	public static void main(String[] args) 
 	{
-		System.out.println("main method");
-		SpringApplication.run(ProsperaLoanApplicationEnquiryApplication.class, args);
-		
+		SpringApplication.run(ProsperaLoanApplicationEnquiryApplication.class, args);	
 	}
 
 }

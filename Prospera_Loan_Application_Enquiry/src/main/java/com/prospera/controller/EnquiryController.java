@@ -39,6 +39,13 @@ public class EnquiryController {
 		return response;
 	}
 	
+	@GetMapping("getbyemail/{email}")
+	public ResponseEntity<List<Enquiry>> getByEmail(@PathVariable("email")String email)
+	{
+		ResponseEntity<List<Enquiry>> response=esi.getByEmail(email);
+		return response;
+	}
+	
 	@GetMapping("/getallenquiry")
 	public ResponseEntity<List<Enquiry>> getallenquiry ()
 	{
