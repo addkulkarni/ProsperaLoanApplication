@@ -1,6 +1,6 @@
 package com.prospera.model;
 
-import jakarta.annotation.Generated;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,6 +36,12 @@ public class Customer
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private Bank bank;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	private Employment emp;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	private Document doc;
 	
 	
 }
