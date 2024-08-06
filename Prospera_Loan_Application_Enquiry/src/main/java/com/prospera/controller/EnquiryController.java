@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.prospera.model.Enquiry;
 import com.prospera.servicei.EnquiryServiceI;
 
+import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/enquiry")
@@ -26,7 +28,7 @@ public class EnquiryController {
 	EnquiryServiceI esi;
 	
 	@PostMapping("addenquiry")
-	public ResponseEntity<String> addEnquiry(@RequestBody Enquiry e)
+	public ResponseEntity<String> addEnquiry(@Valid @RequestBody Enquiry e)
 	{
 		ResponseEntity<String> response = esi.addEnquiry(e);
 		return response;
