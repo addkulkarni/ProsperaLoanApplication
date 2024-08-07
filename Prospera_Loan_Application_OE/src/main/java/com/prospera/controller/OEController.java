@@ -34,4 +34,18 @@ public class OEController
 		ResponseEntity<List<Enquiry>> response=esi.getForwaredToOEEnquiries();
 		return response;
 	}
+	@GetMapping("/getAllCibilApproved")
+	public ResponseEntity<List<Enquiry>> getAllCibilApproved()
+	{
+		
+		ResponseEntity<List<Enquiry>> response = esi.getAllCibilApproved();
+		return response;		
+	}
+	
+	@GetMapping("/forwardtore/{enquiryID}")
+	public ResponseEntity<String> forwardToRE(@PathVariable("enquiryID") int enquiryID)
+	{
+		ResponseEntity<String> e = esi.forwardToRE(enquiryID);
+		return e;
+	}
 }

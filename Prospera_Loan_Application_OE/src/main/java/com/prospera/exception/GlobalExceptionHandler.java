@@ -22,4 +22,30 @@ public class GlobalExceptionHandler
 		error.setTimeStamp(new Date());
 		return error;
 	}
+	@ExceptionHandler(value = CibilScoreNotGeneratedException.class)
+	public ApiError checkloanStatusForOE(CibilScoreNotGeneratedException e , HttpServletRequest request)
+	{
+		ApiError error = new ApiError();
+		error.setMessage(e.getMessage());
+		error.setPath(request.getRequestURI());
+		error.setStatusMessage(HttpStatus.NOT_FOUND);
+		error.setStatusCode(HttpStatus.NOT_FOUND.value());
+		error.setTimeStamp(new Date());
+		return error;
+	}
+	
+	
+	@ExceptionHandler(value = CibilScoreRejectedException.class)
+	public ApiError checkloanStatusForRejection(CibilScoreRejectedException e , HttpServletRequest request)
+	{
+		ApiError error = new ApiError();
+		error.setMessage(e.getMessage());
+		error.setPath(request.getRequestURI());
+		error.setStatusMessage(HttpStatus.NOT_FOUND);
+		error.setStatusCode(HttpStatus.NOT_FOUND.value());
+		error.setTimeStamp(new Date());
+		return error;
+	}
+	
 }
+

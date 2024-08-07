@@ -12,6 +12,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.prospera.exception.CibilScoreNotGeneratedException;
+import com.prospera.exception.CibilScoreRejectedException;
 import com.prospera.exception.InvalidIdException;
 import com.prospera.model.Cibil;
 import com.prospera.model.Enquiry;
@@ -90,4 +92,33 @@ public class EnquiryServiceImpl implements EnquiryServiceI
 		ResponseEntity<List<Enquiry>> response = new ResponseEntity<>(l,HttpStatus.OK);
 		return response;
     }
+
+	@Override
+	public ResponseEntity<List<Enquiry>> getAllCibilApproved() {
+	     List<Enquiry> l= er.findAllByEnquiryStatus("Cibil check cleared");
+	     ResponseEntity<List<Enquiry>> response=new ResponseEntity<>(l,HttpStatus.OK);
+		return response;
+	}
+
+	@Override
+	public ResponseEntity<String> forwardToRE(int enquiryID)  {
+		Enquiry e = er.findById(enquiryID).get();
+		e.setEnquiryStatus("Pending Registration");
+		if(e.getLoanStatus().equals("Pending"))
+		{
+			 throw new CibilScoreNotGeneratedException("Cibil score not yet generated please generate cibil score");
+		}
+		else if(e.getLoanStatus().equals("Cibil Rejected"))
+		{
+			throw new CibilScoreRejectedException("Cibil score has been rejected");
+		}
+		else  {
+			er.save(e);
+			ResponseEntity<String> response = new ResponseEntity<String>("Enquiry forwarded to RE", HttpStatus.OK);
+			return response;	
+	        
+		}
+		
+	}
+	
 }
