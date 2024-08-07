@@ -1,5 +1,6 @@
 package com.prospera.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,11 +13,16 @@ public class Document {
    @Id
    @GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int did;
-	private byte[] adharCard;
-	private byte[] pancard;
+   @Column(length = 9999999)
+	private byte[] adhar;
+   @Column(length = 9999999)
+	private byte[] pan;
+   @Column(length = 9999999)
 	private byte[] photo;
+   @Column(length = 9999999)
 	private byte[] sign;
-	private byte[] voterId;
+   @Column(length = 9999999)
 	private byte[] incomeCertificate;
+   @Column(length = 9999999)
 	private byte[] salarySlip;
 }
