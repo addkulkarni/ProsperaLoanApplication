@@ -12,6 +12,14 @@ public interface EnquiryServiceI
 	ResponseEntity<String> calculateCibil(int enquiryID);
 
 	ResponseEntity<List<Enquiry>> getForwaredToOEEnquiries();
+
+	ResponseEntity<List<Enquiry>> getAllCibilApproved();
+
+	ResponseEntity<String> forwardToRE(int enquiryID);
+
+
+	
+	
 	
 	
 
