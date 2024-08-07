@@ -16,7 +16,11 @@ public interface EnquiryRepository extends JpaRepository<Enquiry, Integer>
 
 	Enquiry findByEnquiryIDAndEnquiryStatus(int enquiryID, String string);
 
-	Optional<Enquiry> getByEnquiryStatus(String string);
+
+
+	
+
+//	Optional<Enquiry> findByEnquiryIDAndLoanStatus(int enquiryID, String string);
 
 	
 
