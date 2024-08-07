@@ -1,8 +1,6 @@
 package com.prospera.servicei;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.http.ResponseEntity;
 
 import com.prospera.model.Enquiry;
@@ -15,8 +13,6 @@ public interface EnquiryServiceI {
 
 	ResponseEntity<String> deleteById(int enquiryID);
 
-	Optional<Enquiry> getEnquiryById(int enquiryID);
-
 	List<Enquiry> getallenquiry();
 	
 	ResponseEntity<Enquiry> getById(int enquiryID);
@@ -27,5 +23,5 @@ public interface EnquiryServiceI {
 
 	ResponseEntity<String> forwardToOE(int enquiryID);
 
-
+	ResponseEntity<List<Enquiry>> getByEmail(String email);
 }
