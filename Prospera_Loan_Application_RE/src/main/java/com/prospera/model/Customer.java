@@ -1,6 +1,10 @@
 package com.prospera.model;
 
 
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,7 +30,8 @@ public class Customer
     private String gender;
     private String pancardNo;
 	private String adharcardNo;
-	private String dob;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	private Date dob;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private PerAddress padr;
@@ -43,5 +48,6 @@ public class Customer
 	@OneToOne(cascade = CascadeType.ALL)
 	private Document doc;
 	
-	
+	@OneToOne(cascade = CascadeType.ALL)
+	private Enquiry enq;
 }
